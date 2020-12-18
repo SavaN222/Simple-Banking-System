@@ -14,6 +14,9 @@ public class Bank {
         System.out.println("0. Exit");
     }
 
+    /**
+     * Create customer account, store account in array list of customers.
+     */
     public void createAccount() {
         Customer customer = new Customer(generateCardNumber(), generatePinCod());
         customers.add(customer);
