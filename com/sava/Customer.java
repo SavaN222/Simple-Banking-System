@@ -3,7 +3,7 @@ package com.sava;
 public class Customer {
     private String cardNumber;
     private String pinCode;
-    private boolean isLoggedIn;
+    private boolean isLoggedIn = false;
 
     public Customer(String cardNumber, String pinCode) {
         this.cardNumber = cardNumber;

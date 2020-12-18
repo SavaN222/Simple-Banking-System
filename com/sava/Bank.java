@@ -91,6 +91,7 @@ public class Bank {
           Customer customer = i.next();
           if (customer.getCardNumber().equals(cardNumber) &&
                   customer.getPinCode().equals(pin)) {
+              customer.setLoggedIn(true);
               return true;
           }
        }
@@ -111,6 +112,39 @@ public class Bank {
            // print menu
        } else {
            System.out.println("Wrong card number or PIN!");
+       }
+   }
+
+    /**
+     * Print options for login menu
+     */
+   private void printLogMenu() {
+       System.out.println("1. Balance");
+       System.out.println("2. Log out");
+       System.out.println("0. Exit");
+   }
+
+    /**
+     * Read user option and call method for that option.
+     */
+   public void logMenu() {
+       boolean flag = true;
+
+       while (flag) {
+           printLogMenu();
+           int option = sc.nextInt();
+
+           switch (option) {
+               case 1:
+                   balance();
+                   break;
+               case 2:
+                   logOut();
+                   break;
+               case 3:
+                   flag = false;
+                   break;
+           }
        }
    }
 }
