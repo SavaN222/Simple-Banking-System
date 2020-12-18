@@ -82,9 +82,9 @@ public class Bank {
      * Check customer credentials for cardNumber and pinCode
      * @param cardNumber customer input cardNumber
      * @param pin customer input cardPin
-     * @return boolean -
+     * @return right Customer -
      */
-   private boolean checkCredentials(String cardNumber, String pin) {
+   private Customer checkCredentials(String cardNumber, String pin) {
        Iterator<Customer> i = customers.iterator();
 
        while (i.hasNext()) {
@@ -92,10 +92,10 @@ public class Bank {
           if (customer.getCardNumber().equals(cardNumber) &&
                   customer.getPinCode().equals(pin)) {
               customer.setLoggedIn(true);
-              return true;
+              return customer;
           }
        }
-       return false;
+       return null;
    }
 
     /**
@@ -106,10 +106,11 @@ public class Bank {
        String cardNumber = sc.nextLine();
        System.out.println("Enter your PIN:");
        String pin = sc.nextLine();
+       Customer customer = checkCredentials(cardNumber, pin);
 
-       if (checkCredentials(cardNumber, pin)) {
+       if (customer != null) {
            System.out.println("You have successfully logged in!");
-           // print menu
+           logMenu(customer);
        } else {
            System.out.println("Wrong card number or PIN!");
        }
@@ -125,9 +126,9 @@ public class Bank {
    }
 
     /**
-     * Read user option and call method for that option.
+     * Read user options and call method for that option.
      */
-   public void logMenu() {
+   public void logMenu(Customer customer) {
        boolean flag = true;
 
        while (flag) {
@@ -136,15 +137,33 @@ public class Bank {
 
            switch (option) {
                case 1:
-                   balance();
+                   balance(customer);
                    break;
                case 2:
-                   logOut();
+                   logOut(customer);
+                   flag = false;
                    break;
                case 3:
                    flag = false;
                    break;
            }
        }
+   }
+
+    /**
+     * Return customer balance
+     * @param customer logged in customer
+     * @return int customer balance
+     */
+   private int balance(Customer customer) {
+       return customer.getBalance();
+   }
+
+    /**
+     * Log out customer from bank system
+     * @param customer logged in customer
+     */
+   private void logOut(Customer customer) {
+       customer.setLoggedIn(false);
    }
 }

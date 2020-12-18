@@ -4,6 +4,7 @@ public class Customer {
     private String cardNumber;
     private String pinCode;
     private boolean isLoggedIn = false;
+    private int balance;
 
     public Customer(String cardNumber, String pinCode) {
         this.cardNumber = cardNumber;
@@ -24,5 +25,13 @@ public class Customer {
 
     public void setLoggedIn(boolean loggedIn) {
         isLoggedIn = loggedIn;
+    }
+
+    public int getBalance() {
+        return balance;
+    }
+
+    public void setBalance(int balance) {
+        this.balance = balance;
     }
 }
