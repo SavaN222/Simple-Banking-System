@@ -14,12 +14,13 @@ public class Main {
 
             switch (option) {
                 case 1:
-                    // createAcoount //
+                    bank.createAccount();
                     break;
                 case 2:
-                    //login//
+                    bank.logIn();
                     break;
                 case 0:
+                    System.out.println("Bye!");
                     flag = false;
                     break;
             }

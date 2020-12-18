@@ -1,9 +1,12 @@
 package com.sava;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Scanner;
 
 public class Bank {
     private ArrayList<Customer> customers = new ArrayList<Customer>();
+    private Scanner sc = new Scanner(System.in);
 
     /**
      * Print's available options in bank
@@ -56,7 +59,7 @@ public class Bank {
         int[] nums = new int[length];
 
         for (int i = 0; i < length; i++) {
-            nums[i] = (int) (Math.random() * 10) - 1;
+            nums[i] = (int) (Math.random() * 10);
         }
         return nums;
    }
@@ -73,5 +76,41 @@ public class Bank {
             sb.append(digit);
         }
         return sb.toString();
+   }
+
+    /**
+     * Check customer credentials for cardNumber and pinCode
+     * @param cardNumber customer input cardNumber
+     * @param pin customer input cardPin
+     * @return boolean -
+     */
+   private boolean checkCredentials(String cardNumber, String pin) {
+       Iterator<Customer> i = customers.iterator();
+
+       while (i.hasNext()) {
+          Customer customer = i.next();
+          if (customer.getCardNumber().equals(cardNumber) &&
+                  customer.getPinCode().equals(pin)) {
+              return true;
+          }
+       }
+       return false;
+   }
+
+    /**
+     * Customer enter card number and PIN, if match up, allow login.
+     */
+   public void logIn() {
+       System.out.println("Enter your card number");
+       String cardNumber = sc.nextLine();
+       System.out.println("Enter your PIN:");
+       String pin = sc.nextLine();
+
+       if (checkCredentials(cardNumber, pin)) {
+           System.out.println("You have successfully logged in!");
+           // print menu
+       } else {
+           System.out.println("Wrong card number or PIN!");
+       }
    }
 }
