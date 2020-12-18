@@ -16,6 +16,17 @@ public class Bank {
     }
 
     /**
+     * Generate 16-digit card number who start with 400000 plus 10 random numbers;
+     * @return String
+     */
+    private String generateCardNumber() {
+        String iib = "400000";
+        String accountNumber = concatenateDigits(generateRandomNumber(10));
+
+        return iib + accountNumber;
+    }
+
+    /**
      * Generate random number
      * @param length - digits in random number.
      * @return int[]
