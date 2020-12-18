@@ -14,9 +14,15 @@ public class Bank {
         System.out.println("0. Exit");
     }
 
-    public Customer createAccount() {
+    public void createAccount() {
         Customer customer = new Customer(generateCardNumber(), generatePinCod());
         customers.add(customer);
+
+        System.out.println("Your card has been created");
+        System.out.println("Your card number:");
+        System.out.println(customers.get(customers.size()-1).getCardNumber());
+        System.out.println("Your card PIN:");
+        System.out.println(customers.get(customers.size()-1).getPinCode());
     }
 
     /**
