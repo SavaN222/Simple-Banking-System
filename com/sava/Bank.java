@@ -1,6 +1,9 @@
 package com.sava;
 
+import java.util.ArrayList;
+
 public class Bank {
+    private ArrayList<Customer> customers = new ArrayList<Customer>();
 
     /**
      * Print's available options in bank
@@ -12,7 +15,16 @@ public class Bank {
     }
 
     public Customer createAccount() {
+        Customer customer = new Customer(generateCardNumber(), generatePinCod());
+        customers.add(customer);
+    }
 
+    /**
+     * Generate random 4 numbers Pin Code for account
+     * @return String
+     */
+    private String generatePinCod() {
+        return concatenateDigits(generateRandomNumber(4));
     }
 
     /**
