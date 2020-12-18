@@ -24,11 +24,12 @@ public class Bank {
         Customer customer = new Customer(generateCardNumber(), generatePinCod());
         customers.add(customer);
 
-        System.out.println("Your card has been created");
+        System.out.println("\nYour card has been created");
         System.out.println("Your card number:");
         System.out.println(customers.get(customers.size()-1).getCardNumber());
         System.out.println("Your card PIN:");
         System.out.println(customers.get(customers.size()-1).getPinCode());
+        System.out.println(" "); // new line fix
     }
 
     /**
@@ -102,17 +103,17 @@ public class Bank {
      * Customer enter card number and PIN, if match up, allow login.
      */
    public void logIn() {
-       System.out.println("Enter your card number");
+       System.out.println("\nEnter your card number");
        String cardNumber = sc.nextLine();
        System.out.println("Enter your PIN:");
        String pin = sc.nextLine();
        Customer customer = checkCredentials(cardNumber, pin);
 
        if (customer != null) {
-           System.out.println("You have successfully logged in!");
+           System.out.println("\nYou have successfully logged in!\n");
            logMenu(customer);
        } else {
-           System.out.println("Wrong card number or PIN!");
+           System.out.println("\nWrong card number or PIN!\n");
        }
    }
 
@@ -151,12 +152,11 @@ public class Bank {
    }
 
     /**
-     * Return customer balance
+     * Write logged in customer balance
      * @param customer logged in customer
-     * @return int customer balance
      */
-   private int balance(Customer customer) {
-       return customer.getBalance();
+   private void balance(Customer customer) {
+       System.out.println("\nBalance: " + customer.getBalance() + "\n");
    }
 
     /**
@@ -164,6 +164,7 @@ public class Bank {
      * @param customer logged in customer
      */
    private void logOut(Customer customer) {
+       System.out.println("\nYou have successfully logged out!\n");
        customer.setLoggedIn(false);
    }
 }
