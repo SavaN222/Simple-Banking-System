@@ -4,7 +4,7 @@ public class Customer {
     private String cardNumber;
     private String pinCode;
     private boolean isLoggedIn = false;
-    private int balance;
+    private int balance = 0;
 
     public Customer(String cardNumber, String pinCode) {
         this.cardNumber = cardNumber;
