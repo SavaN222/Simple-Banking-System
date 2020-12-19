@@ -1,6 +1,7 @@
 package com.sava;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Scanner;
 
@@ -41,14 +42,49 @@ public class Bank {
     }
 
     /**
-     * Generate 16-digit card number who start with 400000 plus 10 random numbers;
+     * Generate 16-digit card number who start with 400000 plus 9 random numbers;
+     *  16 digit is luhnAlgorithm number
      * @return String
      */
     private String generateCardNumber() {
         String iib = "400000";
-        String accountNumber = concatenateDigits(generateRandomNumber(10));
+        String accountNumber = concatenateDigits(generateRandomNumber(9));
+        String checkSum = iib + accountNumber;
 
-        return iib + accountNumber;
+        return luhnAlgorithm(checkSum);
+    }
+
+    /**
+     * Luhn algorithm implementation
+     * @param checkSum 15-digit card Number
+     * @return 16-digit card number
+     */
+    private String luhnAlgorithm(String checkSum) {
+        String[] accNum = checkSum.split("");
+        /**
+         * Multiply odd digits by 2
+         * Substract 9 to numbers over 9
+         */
+        for (int i = 0; i < accNum.length; i+=2) {
+            int temp = Integer.parseInt(accNum[i]);
+            temp *= 2;
+            if (temp > 9) {
+                temp -= 9;
+            }
+            accNum[i] = String.valueOf(temp);
+        }
+
+        /**
+         * Add all numbers
+         */
+        int sum = 0;
+        for (int i = 0; i < accNum.length; i++){
+            sum += Integer.parseInt(accNum[i]);
+        }
+
+        int lastDigit = (10 - sum % 10) % 10;
+
+        return checkSum + String.valueOf(lastDigit);
     }
 
     /**
