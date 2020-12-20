@@ -8,8 +8,8 @@ import java.sql.Statement;
 public class Database {
 //    private final static String PATH = "jdbc:sqlite:";
     private final static String PATH = "jdbc:sqlite:C:\\Users\\Korisnik\\IdeaProjects\\Simple Banking System\\";
-    private Connection conn;
-    private Statement stmt;
+    private static Connection conn;
+    private static Statement stmt;
     private final static String TABLE = "cards";
     private final static String COLUMN_ID = "id";
     private final static String COLUMN_NUMBER = "number";
@@ -33,8 +33,16 @@ public class Database {
         }
     }
 
-    public void createAccount(String cardNumber, String pinCode) {
-
+    public static void createAccount(String cardNumber, String pinCode) {
+        try {
+            String sql = "INSERT INTO " + TABLE + "(number, pin) VALUES('" +
+                    cardNumber + "', '" + pinCode + "')";
+            stmt.execute(sql);
+            System.out.println("\nYour card has been created");
+            System.out.println("Your card number:\n" + cardNumber + "\n");
+            System.out.println("Your card PIN:\n" + pinCode + "\n");
+        } catch (SQLException e) {
+            System.out.println("Wrong insert: " + e.getMessage());
+        }
     }
-
 }

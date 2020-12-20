@@ -21,15 +21,7 @@ public class Bank {
      * Create customer account, store account in array list of customers.
      */
     public void createAccount() {
-        Customer customer = new Customer(generateCardNumber(), generatePinCod());
-        customers.add(customer);
-
-        System.out.println("\nYour card has been created");
-        System.out.println("Your card number:");
-        System.out.println(customers.get(customers.size()-1).getCardNumber());
-        System.out.println("Your card PIN:");
-        System.out.println(customers.get(customers.size()-1).getPinCode());
-        System.out.println(" "); // new line fix
+        Database.createAccount(generateCardNumber(), generatePinCod());
     }
 
     /**
