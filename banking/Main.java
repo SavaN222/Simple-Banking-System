@@ -7,6 +7,7 @@ public class Main {
             Database db = new Database(args[1]);
         } else {
             System.out.println("Database name is not supplied. \nExiting the program.");
+            return;
         }
         Bank bank = new Bank();
 

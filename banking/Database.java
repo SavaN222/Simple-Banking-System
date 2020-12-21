@@ -15,7 +15,7 @@ public class Database {
 
     public Database(String dbName) {
         try {
-            Connection conn = DriverManager.getConnection(PATH + dbName);
+            conn = DriverManager.getConnection(PATH + dbName);
             stmt = conn.createStatement();
 //            stmt.execute("DROP TABLE IF EXISTS " + TABLE);
             stmt.execute("CREATE TABLE IF NOT EXISTS " + TABLE + "(" +
@@ -23,6 +23,7 @@ public class Database {
                     COLUMN_NUMBER + " TEXT," +
                     COLUMN_PIN + " TEXT," +
                     COLUMN_BALANCE + " INTEGER DEFAULT 0)");
+            stmt.close();
 
         } catch (SQLException e) {
             System.out.println("DATABASE ERROR: " + e.getMessage());
@@ -30,29 +31,34 @@ public class Database {
     }
 
     public static void createAccount(String cardNumber, String pinCode) {
-        try {
-            String sql = "INSERT INTO " + TABLE + "(number, pin) VALUES('" +
-                    cardNumber + "', '" + pinCode + "')";
-            stmt.execute(sql);
+        String sql = "INSERT INTO " + TABLE + " (number, pin) VALUES (?, ?)";
+
+        try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+            preparedStatement.setString(1, cardNumber);
+            preparedStatement.setString(2, pinCode);
+
+            preparedStatement.executeUpdate();
+
             System.out.println("\nYour card has been created");
             System.out.println("Your card number:\n" + cardNumber);
             System.out.println("Your card PIN:\n" + pinCode + "\n");
         } catch (SQLException e) {
-            System.out.println("Wrong insert: " + e.getMessage());
+            System.out.println("Insert ERROR: " + e.getMessage());
         }
     }
 
     public static Customer logUser(String cardNumber, String pinCode) {
         Customer customer = null;
-        try {
-            String sql = "SELECT * FROM " + TABLE + " WHERE " +
-                    COLUMN_NUMBER + " = '" + cardNumber + "' AND " +
-                    COLUMN_PIN + " = '" + pinCode + "'";
 
-            String sada = "SELECT * FROM cards WHERE" +
-                    "number = '1231231' AND pin = '213132";
+        String sql = "SELECT * FROM " + TABLE + " " +
+                "WHERE " +
+                COLUMN_NUMBER + " = ? AND " +
+                COLUMN_PIN + " = ?";
+        try(PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+            preparedStatement.setString(1, cardNumber);
+            preparedStatement.setString(2, pinCode);
 
-            ResultSet user = stmt.executeQuery(sql);
+            ResultSet user = preparedStatement.executeQuery();
             while (user.next()) {
                 customer = new Customer(user.getString(COLUMN_NUMBER), user.getString(COLUMN_PIN),
                         true, user.getInt(COLUMN_BALANCE));
