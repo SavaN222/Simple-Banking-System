@@ -35,6 +35,15 @@ public class Bank {
                 balance();
                 break;
             case 2:
+                // addIncome
+                break;
+            case 3:
+                //do transfer
+                break;
+            case 4:
+                //close acc
+                break;
+            case 5:
                 logOut();
                 break;
         }
@@ -166,8 +175,12 @@ public class Bank {
      */
     private void printLogMenu() {
         System.out.println("1. Balance");
-        System.out.println("2. Log out");
+        System.out.println("2. Add Income");
+        System.out.println("3. Do Transfer");
+        System.out.println("4. Close account");
+        System.out.println("5. Log out");
         System.out.println("0. Exit");
+
     }
 
     /**
