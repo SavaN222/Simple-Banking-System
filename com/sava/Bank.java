@@ -154,7 +154,7 @@ public class Bank {
     }
 
     private void logIn() {
-        System.out.println("\nEnter your card number");
+        System.out.println("\nEnter your card number:");
         String cardNumber = sc.nextLine();
         System.out.println("Enter your PIN:");
         String pin = sc.nextLine();
