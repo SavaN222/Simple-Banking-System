@@ -9,8 +9,11 @@ In this project, you will find out how the banking system works and learn about 
 
 Your card has been created
 Your card number:
+
 4000009455296122
+
 Your card PIN:
+
 1961
 
 1. Create an account
@@ -19,9 +22,14 @@ Your card PIN:
 >1
 
 Your card has been created
+
 Your card number:
+
+
 4000003305160034
+
 Your card PIN:
+
 5639
 
 1. Create an account
@@ -30,8 +38,11 @@ Your card PIN:
 >2
 
 Enter your card number:
+
 >4000009455296122
+
 Enter your PIN:
+
 >1961
 
 You have successfully logged in!
@@ -46,6 +57,7 @@ You have successfully logged in!
 
 Enter income:
 >10000
+
 Income was added!
 
 1. Balance
