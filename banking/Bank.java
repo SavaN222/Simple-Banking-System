@@ -35,7 +35,7 @@ public class Bank {
                 balance();
                 break;
             case 2:
-                // addIncome
+                addIncome();
                 break;
             case 3:
                 //do transfer
@@ -53,7 +53,7 @@ public class Bank {
         System.out.println("Enter income:");
         int income = sc.nextInt();
         customer.addIncome(income);
-        System.out.println("Income was added!");
+        Database.addIncome(income, customer.getCardNumber());
     }
 
     private void mainMenu(int num) {

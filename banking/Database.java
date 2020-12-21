@@ -47,6 +47,22 @@ public class Database {
         }
     }
 
+    public static void addIncome(int income, String cardNumber) {
+        String sql = "UPDATE " + TABLE + " SET " +
+                COLUMN_BALANCE + " = " + COLUMN_BALANCE + " + ?" +
+                " WHERE " + COLUMN_NUMBER + " = ?";
+
+        try(PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+            preparedStatement.setInt(1, income);
+            preparedStatement.setString(2, cardNumber);
+
+            preparedStatement.executeUpdate();
+            System.out.println("Income was added!");
+        } catch (SQLException e) {
+            System.out.println("ADD INCOME ERROR: " + e.getMessage());
+        }
+    }
+
     public static Customer logUser(String cardNumber, String pinCode) {
         Customer customer = null;
 
