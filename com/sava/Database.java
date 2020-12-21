@@ -1,9 +1,6 @@
 package com.sava;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class Database {
 //    private final static String PATH = "jdbc:sqlite:";
@@ -20,8 +17,7 @@ public class Database {
         try {
             Connection conn = DriverManager.getConnection(PATH + dbName);
             stmt = conn.createStatement();
-            stmt.execute("DROP TABLE IF EXISTS " + TABLE);
-
+//            stmt.execute("DROP TABLE IF EXISTS " + TABLE);
             stmt.execute("CREATE TABLE IF NOT EXISTS " + TABLE + "(" +
                     COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                     COLUMN_NUMBER + " TEXT," +
@@ -39,10 +35,39 @@ public class Database {
                     cardNumber + "', '" + pinCode + "')";
             stmt.execute(sql);
             System.out.println("\nYour card has been created");
-            System.out.println("Your card number:\n" + cardNumber + "\n");
+            System.out.println("Your card number:\n" + cardNumber);
             System.out.println("Your card PIN:\n" + pinCode + "\n");
         } catch (SQLException e) {
             System.out.println("Wrong insert: " + e.getMessage());
+        }
+    }
+
+    public static Customer logUser(String cardNumber, String pinCode) {
+        try {
+            String sql = "SELECT * FROM " + TABLE + " WHERE " +
+                    COLUMN_NUMBER + " = '" + cardNumber + "' AND " +
+                    COLUMN_PIN + " = '" + pinCode + "'";
+
+            String sada = "SELECT * FROM cards WHERE" +
+                    "number = '1231231' AND pin = '213132";
+
+            ResultSet user = stmt.executeQuery(sql);
+            while (user.next()) {
+                return new Customer(user.getString(COLUMN_NUMBER), user.getString(COLUMN_PIN),
+                        true, user.getInt(COLUMN_BALANCE));
+            }
+        } catch (SQLException e) {
+            System.out.println("Getting records: " + e.getMessage());
+        }
+        return null;
+    }
+
+    public static void closeConnection() {
+        try {
+            stmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
         }
     }
 }

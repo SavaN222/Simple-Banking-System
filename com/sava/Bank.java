@@ -1,26 +1,73 @@
 package com.sava;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Scanner;
 
 public class Bank {
-    private ArrayList<Customer> customers = new ArrayList<Customer>();
     private Scanner sc = new Scanner(System.in);
+    private Customer customer = null;
+
+    public Bank() {
+        boolean flag = true;
+        while (flag) {
+          if (customer == null || !customer.isLoggedIn()) {
+              printMenu();
+          } else {
+              printLogMenu();
+          }
+           int num = sc.nextInt();
+           sc.nextLine();
+           if (num == 0) {
+               System.out.println("Bye!");
+               flag = false;
+               break;
+           }
+           if (customer == null || !customer.isLoggedIn()) {
+               mainMenu(num);
+           } else {
+               subMenu(num);
+           }
+        }
+    }
+
+    private void subMenu(int num) {
+        switch (num) {
+            case 1:
+                balance();
+                break;
+            case 2:
+                logOut();
+                break;
+        }
+    }
+
+    private void mainMenu(int num) {
+        switch (num) {
+            case 1:
+                createAccount();
+                break;
+            case 2:
+                logIn();
+                if (customer == null) {
+                    System.out.println("\nWrong card number or PIN!\n");
+                    break;
+                }
+                System.out.println("\nYou have successfully logged in!\n");
+                break;
+        }
+    }
 
     /**
      * Print's available options in bank
      */
-    public void menu() {
-        System.out.println("1. Create an account");
-        System.out.println("2. Log into account");
-        System.out.println("0. Exit");
-    }
-
+    private void printMenu() {
+            System.out.println("1. Create an account");
+            System.out.println("2. Log into account");
+            System.out.println("0. Exit");
+        }
     /**
      * Create customer account, store account in array list of customers.
      */
-    public void createAccount() {
+    private void createAccount() {
         Database.createAccount(generateCardNumber(), generatePinCod());
     }
 
@@ -106,42 +153,12 @@ public class Bank {
         return sb.toString();
     }
 
-    /**
-     * Check customer credentials for cardNumber and pinCode
-     * @param cardNumber customer input cardNumber
-     * @param pin customer input cardPin
-     * @return right Customer -
-     */
-    private Customer checkCredentials(String cardNumber, String pin) {
-        Iterator<Customer> i = customers.iterator();
-
-        while (i.hasNext()) {
-            Customer customer = i.next();
-            if (customer.getCardNumber().equals(cardNumber) &&
-                    customer.getPinCode().equals(pin)) {
-                customer.setLoggedIn(true);
-                return customer;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Customer enter card number and PIN, if match up, allow login.
-     */
-    public void logIn() {
+    private void logIn() {
         System.out.println("\nEnter your card number");
         String cardNumber = sc.nextLine();
         System.out.println("Enter your PIN:");
         String pin = sc.nextLine();
-        Customer customer = checkCredentials(cardNumber, pin);
-
-        if (customer != null) {
-            System.out.println("\nYou have successfully logged in!\n");
-            logMenu(customer);
-        } else {
-            System.out.println("\nWrong card number or PIN!\n");
-        }
+        customer = Database.logUser(cardNumber, pin);
     }
 
     /**
@@ -154,43 +171,16 @@ public class Bank {
     }
 
     /**
-     * Read user options and call method for that option.
-     */
-    public void logMenu(Customer customer) {
-        boolean flag = true;
-
-        while (flag) {
-            printLogMenu();
-            int option = sc.nextInt();
-
-            switch (option) {
-                case 1:
-                    balance(customer);
-                    break;
-                case 2:
-                    logOut(customer);
-                    flag = false;
-                    break;
-                case 3:
-                    flag = false;
-                    break;
-            }
-        }
-    }
-
-    /**
      * Write logged in customer balance
-     * @param customer logged in customer
      */
-    private void balance(Customer customer) {
+    private void balance() {
         System.out.println("\nBalance: " + customer.getBalance() + "\n");
     }
 
     /**
      * Log out customer from bank system
-     * @param customer logged in customer
      */
-    private void logOut(Customer customer) {
+    private void logOut() {
         System.out.println("\nYou have successfully logged out!\n");
         customer.setLoggedIn(false);
     }
