@@ -49,6 +49,13 @@ public class Bank {
         }
     }
 
+    private void addIncome() {
+        System.out.println("Enter income:");
+        int income = sc.nextInt();
+        customer.addIncome(income);
+        System.out.println("Income was added!");
+    }
+
     private void mainMenu(int num) {
         switch (num) {
             case 1:

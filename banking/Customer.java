@@ -36,4 +36,8 @@ public class Customer {
     public void setBalance(int balance) {
         this.balance = balance;
     }
+
+    public void addIncome(int income) {
+        this.balance += income;
+    }
 }
