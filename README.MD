@@ -69,6 +69,7 @@ Balance: 10000
 Transfer
 Enter card number:
 >4000003305160035
+
 Probably you made mistake in the card number. Please try again!
 
 1. Balance
@@ -82,6 +83,7 @@ Probably you made mistake in the card number. Please try again!
 Transfer
 Enter card number:
 >4000003305061034
+
 Such a card does not exist.
 
 1. Balance
@@ -95,8 +97,10 @@ Such a card does not exist.
 Transfer
 Enter card number:
 >4000003305160034
+
 Enter how much money you want to transfer:
 >15000
+
 Not enough money!
 
 1. Balance
@@ -110,8 +114,10 @@ Not enough money!
 Transfer
 Enter card number:
 >4000003305160034
+
 Enter how much money you want to transfer:
 >5000
+
 Success!
 
 1. Balance
