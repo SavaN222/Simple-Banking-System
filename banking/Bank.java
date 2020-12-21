@@ -7,6 +7,9 @@ public class Bank {
     private Scanner sc = new Scanner(System.in);
     private Customer customer = null;
 
+    /**
+     * Check if customer login into their account and print appropriate menu.
+     */
     public Bank() {
         boolean flag = true;
         while (flag) {
@@ -30,6 +33,10 @@ public class Bank {
         }
     }
 
+    /**
+     * Handle options for submenu
+     * @param num user input
+     */
     private void subMenu(int num) {
         switch (num) {
             case 1:
@@ -50,6 +57,9 @@ public class Bank {
         }
     }
 
+    /**
+     * Delete account
+     */
     private void closeAccount() {
         try {
             Database.deleteAccount(customer.getCardNumber());
@@ -60,6 +70,9 @@ public class Bank {
         }
     }
 
+    /**
+     * Customer update their balance
+     */
     private void addIncome() {
         System.out.println("Enter income:");
         int income = sc.nextInt();
@@ -72,6 +85,9 @@ public class Bank {
         }
     }
 
+    /**
+     * Transfer money to another account
+     */
     private void transferMoney() {
         System.out.println("\nTransfer");
         System.out.println("Enter card number:");
@@ -103,6 +119,10 @@ public class Bank {
         }
     }
 
+    /**
+     * Handle options for submenu
+     * @param num user inpit
+     */
     private void mainMenu(int num) {
         switch (num) {
             case 1:
@@ -128,7 +148,7 @@ public class Bank {
             System.out.println("0. Exit");
         }
     /**
-     * Create customer account, store account in array list of customers.
+     * Create customer account, store account in database.
      */
     private void createAccount() {
         Database.createAccount(generateCardNumber(), generatePinCod());
@@ -188,6 +208,11 @@ public class Bank {
         return checkSum + String.valueOf(lastDigit);
     }
 
+    /**
+     * When user want to transfer money to another account check luhnNumber.
+     * @param cardNumber userInput cardNumber were they want to transfer money
+     * @return
+     */
     private boolean isLuhnNumber(String cardNumber) {
         String[] accNum = cardNumber.split(""); // 16 numbers
         int length = accNum.length - 1; // 15 numbers
@@ -245,6 +270,9 @@ public class Bank {
         return sb.toString();
     }
 
+    /**
+     * Take user input and try to log in, in the bank account
+     */
     private void logIn() {
         System.out.println("\nEnter your card number:");
         String cardNumber = sc.nextLine();

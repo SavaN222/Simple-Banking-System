@@ -13,11 +13,14 @@ public class Database {
     private final static String COLUMN_PIN = "pin";
     private final static String COLUMN_BALANCE = "balance";
 
+    /**
+     * Create database connection and create table.
+     * @param dbName take input from command line
+     */
     public Database(String dbName) {
         try {
             conn = DriverManager.getConnection(PATH + dbName);
             stmt = conn.createStatement();
-//            stmt.execute("DROP TABLE IF EXISTS " + TABLE);
             stmt.execute("CREATE TABLE IF NOT EXISTS " + TABLE + "(" +
                     COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                     COLUMN_NUMBER + " TEXT," +
@@ -30,6 +33,11 @@ public class Database {
         }
     }
 
+    /**
+     * Create customer account
+     * @param cardNumber random generate 16-card number
+     * @param pinCode random generate 4-pin code
+     */
     public static void createAccount(String cardNumber, String pinCode) {
         String sql = "INSERT INTO " + TABLE + " (number, pin) VALUES (?, ?)";
 
@@ -47,6 +55,12 @@ public class Database {
         }
     }
 
+    /**
+     * Add income and update customer balance
+     * @param income userInput income
+     * @param cardNumber cardNumber of login user
+     * @throws SQLException
+     */
     public static void addIncome(int income, String cardNumber) throws SQLException {
         String sql = "UPDATE " + TABLE + " SET " +
                 COLUMN_BALANCE + " = " + COLUMN_BALANCE + " + ?" +
@@ -60,6 +74,11 @@ public class Database {
         }
     }
 
+    /**
+     * Delete user account
+     * @param cardNumber delete login user account
+     * @throws SQLException
+     */
     public static void deleteAccount(String cardNumber) throws SQLException {
         String sql = "DELETE FROM " + TABLE + " WHERE " +
                 COLUMN_NUMBER + " = ?";
@@ -69,6 +88,11 @@ public class Database {
         }
     }
 
+    /**
+     * Check if account exist
+     * @param cardNumber user input acc Number of another customer
+     * @return string cardNumber
+     */
     public static String accountExists(String cardNumber) {
         String sql = "SELECT number FROM " + TABLE + " WHERE " +
                 COLUMN_NUMBER + " = ? ";
@@ -81,6 +105,13 @@ public class Database {
         }
     }
 
+    /**
+     * Transaction for transfering money
+     * @param senderCardNumber
+     * @param recipientCardNumber
+     * @param amount
+     * @throws SQLException
+     */
     public static void transferMoney(String senderCardNumber, String recipientCardNumber, int amount) throws SQLException {
         conn.setAutoCommit(false);
         addIncome(-amount, senderCardNumber);
@@ -89,6 +120,12 @@ public class Database {
 
     }
 
+    /**
+     * Log user to bank account
+     * @param cardNumber user string input
+     * @param pinCode user string input
+     * @return customer object with data for that customer
+     */
     public static Customer logUser(String cardNumber, String pinCode) {
         Customer customer = null;
 
@@ -111,6 +148,9 @@ public class Database {
         return customer;
     }
 
+    /**
+     * Close connection
+     */
     public static void closeConnection() {
         try {
             stmt.close();
