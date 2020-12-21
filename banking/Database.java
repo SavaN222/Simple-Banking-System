@@ -77,7 +77,6 @@ public class Database {
             ResultSet result = preparedStatement.executeQuery();
             return result.getString(COLUMN_NUMBER);
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
             return "";
         }
     }

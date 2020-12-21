@@ -42,7 +42,7 @@ public class Bank {
                 transferMoney();
                 break;
             case 4:
-                //close acc
+                closeAccount();
                 break;
             case 5:
                 logOut();
@@ -53,7 +53,8 @@ public class Bank {
     private void closeAccount() {
         try {
             Database.deleteAccount(customer.getCardNumber());
-            System.out.println("The account has been closed!");
+            System.out.println("\nThe account has been closed!\n");
+            customer.setLoggedIn(false);
         } catch (SQLException e) {
             System.out.println("Error deleting acc: " + e.getMessage());
         }
@@ -65,38 +66,38 @@ public class Bank {
         try {
             Database.addIncome(income, customer.getCardNumber());
             customer.addIncome(income);
-            System.out.println("Income was added");
+            System.out.println("Income was added!\n");
         } catch (SQLException e) {
             System.out.println("ERROR INCOME: " + e.getMessage());
         }
     }
 
     private void transferMoney() {
-        System.out.println("Transfer");
+        System.out.println("\nTransfer");
         System.out.println("Enter card number:");
         String cardNumber = sc.nextLine();
         if (!isLuhnNumber(cardNumber)) {
-            System.out.println("Probably you made mistake in the card number. Please try again!");
+            System.out.println("Probably you made mistake in the card number. Please try again!\n");
             return;
         }
 
         String recipient = Database.accountExists(cardNumber);
 
         if (recipient.isEmpty()) {
-            System.out.println("Such a card does not exist.");
+            System.out.println("Such a card does not exist.\n");
             return;
         }
 
         System.out.println("Enter how much money you want to transfer:");
         int amount = sc.nextInt();
         if (customer.getBalance() < amount) {
-            System.out.println("Not enough money!");
+            System.out.println("Not enough money!\n");
             return;
         }
         try {
             Database.transferMoney(customer.getCardNumber(), recipient, amount);
             customer.addIncome(-amount);
-            System.out.println("Success!");
+            System.out.println("Success!\n");
         } catch (SQLException e){
             System.out.println(e.getMessage());
         }
