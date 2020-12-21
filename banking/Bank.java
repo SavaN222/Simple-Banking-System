@@ -50,6 +50,15 @@ public class Bank {
         }
     }
 
+    private void closeAccount() {
+        try {
+            Database.deleteAccount(customer.getCardNumber());
+            System.out.println("The account has been closed!");
+        } catch (SQLException e) {
+            System.out.println("Error deleting acc: " + e.getMessage());
+        }
+    }
+
     private void addIncome() {
         System.out.println("Enter income:");
         int income = sc.nextInt();
@@ -91,9 +100,6 @@ public class Bank {
         } catch (SQLException e){
             System.out.println(e.getMessage());
         }
-
-
-
     }
 
     private void mainMenu(int num) {

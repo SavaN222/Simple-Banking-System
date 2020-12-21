@@ -60,6 +60,15 @@ public class Database {
         }
     }
 
+    public static void deleteAccount(String cardNumber) throws SQLException {
+        String sql = "DELETE FROM " + TABLE + " WHERE " +
+                COLUMN_NUMBER + " = ?";
+        try(PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+            preparedStatement.setString(1, cardNumber);
+            preparedStatement.executeUpdate();
+        }
+    }
+
     public static String accountExists(String cardNumber) {
         String sql = "SELECT number FROM " + TABLE + " WHERE " +
                 COLUMN_NUMBER + " = ? ";
