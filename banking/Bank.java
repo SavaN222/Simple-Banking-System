@@ -1,4 +1,4 @@
-package com.sava;
+package banking;
 
 import java.util.Scanner;
 

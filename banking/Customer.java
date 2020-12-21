@@ -1,4 +1,4 @@
-package com.sava;
+package banking;
 
 public class Customer {
     private String cardNumber;

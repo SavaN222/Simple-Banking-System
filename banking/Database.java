@@ -1,13 +1,13 @@
-package com.sava;
+package banking;
 
 import java.sql.*;
 
 public class Database {
 //    private final static String PATH = "jdbc:sqlite:";
-    private final static String PATH = "jdbc:sqlite:C:\\Users\\Korisnik\\IdeaProjects\\Simple Banking System\\";
+     private final static String PATH = "jdbc:sqlite:C:\\Users\\Korisnik\\IdeaProjects\\Simple Banking System\\";
     private static Connection conn;
     private static Statement stmt;
-    private final static String TABLE = "cards";
+    private final static String TABLE = "card";
     private final static String COLUMN_ID = "id";
     private final static String COLUMN_NUMBER = "number";
     private final static String COLUMN_PIN = "pin";
@@ -43,6 +43,7 @@ public class Database {
     }
 
     public static Customer logUser(String cardNumber, String pinCode) {
+        Customer customer = null;
         try {
             String sql = "SELECT * FROM " + TABLE + " WHERE " +
                     COLUMN_NUMBER + " = '" + cardNumber + "' AND " +
@@ -53,13 +54,13 @@ public class Database {
 
             ResultSet user = stmt.executeQuery(sql);
             while (user.next()) {
-                return new Customer(user.getString(COLUMN_NUMBER), user.getString(COLUMN_PIN),
+                customer = new Customer(user.getString(COLUMN_NUMBER), user.getString(COLUMN_PIN),
                         true, user.getInt(COLUMN_BALANCE));
             }
         } catch (SQLException e) {
             System.out.println("Getting records: " + e.getMessage());
         }
-        return null;
+        return customer;
     }
 
     public static void closeConnection() {
