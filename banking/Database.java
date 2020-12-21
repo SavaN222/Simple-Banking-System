@@ -47,20 +47,38 @@ public class Database {
         }
     }
 
-    public static void addIncome(int income, String cardNumber) {
+    public static void addIncome(int income, String cardNumber) throws SQLException {
         String sql = "UPDATE " + TABLE + " SET " +
                 COLUMN_BALANCE + " = " + COLUMN_BALANCE + " + ?" +
                 " WHERE " + COLUMN_NUMBER + " = ?";
 
-        try(PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+        try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
             preparedStatement.setInt(1, income);
             preparedStatement.setString(2, cardNumber);
 
             preparedStatement.executeUpdate();
-            System.out.println("Income was added!");
-        } catch (SQLException e) {
-            System.out.println("ADD INCOME ERROR: " + e.getMessage());
         }
+    }
+
+    public static String accountExists(String cardNumber) {
+        String sql = "SELECT number FROM " + TABLE + " WHERE " +
+                COLUMN_NUMBER + " = ? ";
+        try(PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+            preparedStatement.setString(1, cardNumber);
+            ResultSet result = preparedStatement.executeQuery();
+            return result.getString(COLUMN_NUMBER);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return "";
+        }
+    }
+
+    public static void transferMoney(String senderCardNumber, String recipientCardNumber, int amount) throws SQLException {
+        conn.setAutoCommit(false);
+        addIncome(-amount, senderCardNumber);
+        addIncome(amount, recipientCardNumber);
+        conn.commit();
+
     }
 
     public static Customer logUser(String cardNumber, String pinCode) {

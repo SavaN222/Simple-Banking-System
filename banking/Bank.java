@@ -1,5 +1,6 @@
 package banking;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class Bank {
@@ -38,7 +39,7 @@ public class Bank {
                 addIncome();
                 break;
             case 3:
-                //do transfer
+                transferMoney();
                 break;
             case 4:
                 //close acc
@@ -52,8 +53,47 @@ public class Bank {
     private void addIncome() {
         System.out.println("Enter income:");
         int income = sc.nextInt();
-        customer.addIncome(income);
-        Database.addIncome(income, customer.getCardNumber());
+        try {
+            Database.addIncome(income, customer.getCardNumber());
+            customer.addIncome(income);
+            System.out.println("Income was added");
+        } catch (SQLException e) {
+            System.out.println("ERROR INCOME: " + e.getMessage());
+        }
+    }
+
+    private void transferMoney() {
+        System.out.println("Transfer");
+        System.out.println("Enter card number:");
+        String cardNumber = sc.nextLine();
+        if (!isLuhnNumber(cardNumber)) {
+            System.out.println("Probably you made mistake in the card number. Please try again!");
+            return;
+        }
+
+        String recipient = Database.accountExists(cardNumber);
+
+        if (recipient.isEmpty()) {
+            System.out.println("Such a card does not exist.");
+            return;
+        }
+
+        System.out.println("Enter how much money you want to transfer:");
+        int amount = sc.nextInt();
+        if (customer.getBalance() < amount) {
+            System.out.println("Not enough money!");
+            return;
+        }
+        try {
+            Database.transferMoney(customer.getCardNumber(), recipient, amount);
+            customer.addIncome(-amount);
+            System.out.println("Success!");
+        } catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+
+
+
     }
 
     private void mainMenu(int num) {
@@ -139,6 +179,35 @@ public class Bank {
         int lastDigit = (10 - sum % 10) % 10;
 
         return checkSum + String.valueOf(lastDigit);
+    }
+
+    private boolean isLuhnNumber(String cardNumber) {
+        String[] accNum = cardNumber.split(""); // 16 numbers
+        int length = accNum.length - 1; // 15 numbers
+        /**
+         * Multiply odd digits by 2
+         * Substract 9 to numbers over 9
+         */
+        for (int i = 0; i < length; i+=2) {
+            int temp = Integer.parseInt(accNum[i]);
+            temp *= 2;
+            if (temp > 9) {
+                temp -= 9;
+            }
+            accNum[i] = String.valueOf(temp);
+        }
+
+        /**
+         * Add all numbers
+         */
+        int sum = 0;
+        for (int i = 0; i < length; i++){
+            sum += Integer.parseInt(accNum[i]);
+        }
+
+        char lastDigit = Character.forDigit((10 - sum % 10) % 10, 10);
+        return lastDigit == cardNumber.charAt(cardNumber.length()-1);
+
     }
 
     /**
